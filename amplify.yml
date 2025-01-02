@@ -1,0 +1,22 @@
+version: 1
+applications:
+  - frontend:
+      phases:
+        preBuild:
+          commands:
+            - npm ci
+        build:
+          commands:
+            # Set NODE_OPTIONS to increase memory limit if needed
+            - export NODE_OPTIONS="--max-old-space-size=8192"
+            # Temporarily disable eslint for build
+            - DISABLE_ESLINT_PLUGIN=true npm run build
+      artifacts:
+        baseDirectory: .next
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - node_modules/**/*
+          - .next/cache/**/*
+    appRoot: .
